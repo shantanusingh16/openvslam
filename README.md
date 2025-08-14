@@ -3,19 +3,17 @@
 </p>
 
 # OpenVSLAM: A Versatile Visual SLAM Framework
-[![Wercker Status](https://app.wercker.com/status/402b9e7a1fae92493519fff03d513565/s/main "wercker status")](https://app.wercker.com/ymd-stella/openvslam/runs)
-[![Documentation Status](https://readthedocs.org/projects/openvslam-community/badge/?version=latest)](https://openvslam-community.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-BSD%202--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 ---
 
-> *NOTE:* This is a community fork of [xdspacelab/openvslam](https://github.com/xdspacelab/openvslam). It was created to continue active development of OpenVSLAM.
+> *NOTE:* This is a fork of [lp-research/openvslam](https://github.com/lp-research/openvslam.git), which itself is a community fork of [xdspacelab/openvslam](https://github.com/xdspacelab/openvslam). I created this to experiment with new enhancements (classical and DL-based) for Visual SLAM.
 
 ---
 
 ## Overview
 
-[<img src="https://raw.githubusercontent.com/OpenVSLAM-Community/openvslam/main/docs/img/teaser.png" width="640px">](https://arxiv.org/abs/1910.01122)
+[<img src="docs/img/teaser.png" width="640px">](https://arxiv.org/abs/1910.01122)
 
 <img src="https://j.gifs.com/81m1QL.gif" width="640px">
 

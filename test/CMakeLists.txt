@@ -4,8 +4,8 @@ set(INSTALL_GTEST OFF CACHE BOOL "Install google-test" FORCE)
 
 include(${PROJECT_SOURCE_DIR}/cmake/DownloadProject.cmake)
 download_project(PROJ googletest
-                 URL https://github.com/google/googletest/archive/release-1.10.0.tar.gz
-                 URL_HASH SHA1=9c89be7df9c5e8cb0bc20b3c4b39bf7e82686770
+                 URL https://github.com/google/googletest/releases/download/v1.17.0/googletest-1.17.0.tar.gz
+                 URL_HASH SHA1=8a8ee424e8275ec4b480ba4a0d1ba94b5dee3ee4
                  DOWNLOAD_NO_PROGRESS YES)
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 
@@ -39,7 +39,8 @@ foreach(SOURCE_PATH ${SOURCE_PATHS})
                           test_helper
                           gtest_main
                           opencv_imgcodecs
-                          opencv_highgui)
+                          opencv_highgui
+                          OpenMP::OpenMP_CXX)
     set_target_properties(${TEST_EXECUTABLE_NAME} PROPERTIES
                           RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/test
                           RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/test

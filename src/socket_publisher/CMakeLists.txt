@@ -2,6 +2,9 @@
 
 # socket.io-cpp-client
 find_package(sioclient REQUIRED)
+if (sioclient_FOUND)
+    message("FOUND sioclient ${SIOCLIENT_LIBRARIES} ${SIOCLIENT_INCLUDE_DIRS}")
+endif()
 
 # Protobuf
 find_package(Protobuf REQUIRED)
@@ -37,7 +40,7 @@ set_target_properties(socket_publisher PROPERTIES
 
 target_include_directories(socket_publisher
                            PUBLIC
-                           ${SIOCLIENT_INCLUDE_DIR}
+                           ${SIOCLIENT_INCLUDE_DIRS}
                            ${PROTOBUF_INCLUDE_DIRS}
                            PRIVATE
                            ${CMAKE_CURRENT_BINARY_DIR})
@@ -46,7 +49,7 @@ target_link_libraries(socket_publisher
                       PUBLIC
                       ${PROJECT_NAME}
                       opencv_imgcodecs
-                      ${SIOCLIENT_LIBRARY}
+                      ${SIOCLIENT_LIBRARIES}
                       ${PROTOBUF_LIBRARIES})
 
 # ----- Install configuration -----

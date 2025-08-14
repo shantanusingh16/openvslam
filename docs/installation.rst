@@ -184,6 +184,23 @@ Download, build and install OpenCV from source.
     make -j4
     make install
 
+Download, build and install **the custom FBoW** from source.
+
+.. code-block:: bash
+
+    cd /path/to/working/dir
+    git clone https://github.com/shantanusingh16/FBoW.git
+    cd FBoW
+    mkdir build && cd build
+    cmake \
+        -DBUILD_TESTS=ON \
+        -DBUILD_UTILS=ON \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=$PWD/install \
+        ..
+    make -j4
+    make install
+
 Jump to :ref:`Common Installation Instructions <subsection-common-linux-macos>` for the next step.
 
 .. _section-macos:
@@ -191,7 +208,7 @@ Jump to :ref:`Common Installation Instructions <subsection-common-linux-macos>` 
 Installing for macOS
 ^^^^^^^^^^^^^^^^^^^^
 
-Tested for **macOS High Sierra**.
+Tested for **macOS High Ventura**.
 
 Install the dependencies via ``brew``.
 
@@ -207,7 +224,7 @@ Install the dependencies via ``brew``.
     brew install ffmpeg
     brew install opencv
     # other dependencies
-    brew install yaml-cpp glog gflags
+    brew install yaml-cpp glog gflags libomp
 
     # (if you plan on using PangolinViewer)
     # Pangolin dependencies
@@ -219,27 +236,37 @@ Install the dependencies via ``brew``.
     # Node.js
     brew install node
 
+Download, build and install **the custom FBoW** from source.
+
+.. code-block:: bash
+
+    cd /path/to/working/dir
+    git clone https://github.com/shantanusingh16/FBoW.git
+    cd FBoW
+    mkdir build && cd build
+    cmake \
+        -DBUILD_TESTS=ON \
+        -DBUILD_UTILS=ON \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=$PWD/install \
+        -DCMAKE_PREFIX_PATH=/opt/homebrew \
+        -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
+        -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
+        -DCMAKE_C_FLAGS="-I/opt/homebrew/opt/libomp/include -fopenmp=libomp" \
+        -DCMAKE_CXX_FLAGS="-I/opt/homebrew/opt/libomp/include -fopenmp=libomp" \
+        -DCMAKE_EXE_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        -DCMAKE_SHARED_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        -DCMAKE_MODULE_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        ..
+    make -j4
+    make install
+
 Jump to :ref:`Common Installation Instructions <subsection-common-linux-macos>` for the next step.
 
 .. _subsection-common-linux-macos:
 
 Common Installation Instructions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Download, build and install **the custom FBoW** from source.
-
-.. code-block:: bash
-
-    cd /path/to/working/dir
-    git clone https://github.com/OpenVSLAM-Community/FBoW.git
-    cd FBoW
-    mkdir build && cd build
-    cmake \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX=/usr/local \
-        ..
-    make -j4
-    make install
 
 Download, build and install g2o.
 
@@ -283,12 +310,14 @@ Download, build and install g2o.
 
 | (**if you plan on using SocketViewer**)
 | Download, build and install socket.io-client-cpp from source.
+| Note: We need to update the cmake_minimum_required to 3.20. 
 
 .. code-block:: bash
 
     cd /path/to/working/dir
     git clone https://github.com/shinsumicco/socket.io-client-cpp.git
     cd socket.io-client-cpp
+    sed -i '' -E 's/cmake_minimum_required\(VERSION [0-9]+(\.[0-9]+)*[^)]*\)/cmake_minimum_required(VERSION 3.20)/' CMakeLists.txt
     git submodule init
     git submodule update
     mkdir build && cd build
@@ -296,6 +325,7 @@ Download, build and install g2o.
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
         -DBUILD_UNIT_TESTS=OFF \
+        -DCMAKE_INSTALL_PREFIX=$PWD/install \
         ..
     make -j4
     make install
@@ -332,6 +362,7 @@ Build Instructions
 ==================
 
 When building with support for PangolinViewer, please specify the following cmake options: ``-DUSE_PANGOLIN_VIEWER=ON`` and ``-DUSE_SOCKET_PUBLISHER=OFF``.
+**NOTE: Avoid on Mac ARM platform due to OpenGL issues. Use SocketViewer instead.**
 
 .. code-block:: bash
 
@@ -359,8 +390,29 @@ When building with support for SocketViewer, please specify the following cmake 
         -DUSE_STACK_TRACE_LOGGER=ON \
         -DBUILD_TESTS=ON \
         -DBUILD_EXAMPLES=ON \
+        -DCMAKE_PREFIX_PATH="/opt/homebrew;$PWD/../3rd/socket.io-client-cpp/build/install" \
         ..
     make -j4
+
+
+Note while building on **Mac ARM platform**, use the following command when using homebrew llvm to work properly with OpenMP
+.. code-block:: bash
+    cmake \
+        -DUSE_PANGOLIN_VIEWER=OFF \
+        -DUSE_SOCKET_PUBLISHER=ON \
+        -DUSE_STACK_TRACE_LOGGER=ON \
+        -DBUILD_TESTS=ON \
+        -DBUILD_EXAMPLES=ON \
+        -DCMAKE_PREFIX_PATH="/opt/homebrew;$PWD/../3rd/socket.io-client-cpp/build/install" \
+        -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
+        -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
+        -DCMAKE_C_FLAGS="-I/opt/homebrew/opt/libomp/include -fopenmp=libomp" \
+        -DCMAKE_CXX_FLAGS="-I/opt/homebrew/opt/libomp/include -fopenmp=libomp" \
+        -DCMAKE_EXE_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        -DCMAKE_SHARED_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        -DCMAKE_MODULE_LINKER_FLAGS="-L/opt/homebrew/opt/libomp/lib -lomp" \
+        -DCMAKE_INSTALL_PREFIX=$PWD/install \
+        ..
 
 After building, check to see if it was successfully built by executing ``./run_kitti_slam -h``.
 

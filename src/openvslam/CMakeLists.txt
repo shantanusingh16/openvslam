@@ -77,15 +77,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # ----- Compile configuration -----
 
-# OpenMP
-target_compile_options(${PROJECT_NAME} PRIVATE ${OpenMP_CXX_FLAGS})
-set(USE_OPENMP OFF CACHE BOOL "Use OpenMP")
-if(USE_OPENMP)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC USE_OPENMP)
-    message(STATUS "OpenMP: ENABLED")
-else()
-    message(STATUS "OpenMP: DISABLED")
-endif()
 
 set(USE_SSE_ORB OFF CACHE BOOL "Enable SSE3 instruction for ORB extraction")
 if(USE_SSE_ORB)
@@ -142,7 +133,7 @@ target_link_libraries(${PROJECT_NAME}
                       Threads::Threads
                       OpenMP::OpenMP_CXX
                       Eigen3::Eigen
-                      yaml-cpp
+                      yaml-cpp::yaml-cpp
                       opencv_core
                       opencv_features2d
                       opencv_calib3d

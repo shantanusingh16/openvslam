@@ -31,8 +31,8 @@ void global_bundle_adjuster::optimize(const unsigned int lead_keyfrm_id_in_globa
 
     // 2. Construct an optimizer
 
-    auto linear_solver = g2o::make_unique<g2o::LinearSolverCSparse<g2o::BlockSolver_6_3::PoseMatrixType>>();
-    auto block_solver = g2o::make_unique<g2o::BlockSolver_6_3>(std::move(linear_solver));
+    auto linear_solver = std::make_unique<g2o::LinearSolverCSparse<g2o::BlockSolver_6_3::PoseMatrixType>>();
+    auto block_solver = std::make_unique<g2o::BlockSolver_6_3>(std::move(linear_solver));
     auto algorithm = new g2o::OptimizationAlgorithmLevenberg(std::move(block_solver));
 
     g2o::SparseOptimizer optimizer;
